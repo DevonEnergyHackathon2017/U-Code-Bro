@@ -1,0 +1,32 @@
+<link rel="import" href="/tpc/polymer/polymer-element.html">
+<link rel="import" href="/main-styles.html">
+
+<dom-module id="main-app">
+  <template>
+    <style include="main-styles">
+      .content {
+        background-color: lightgray;
+        min-width: 20rem;
+        max-width: 50rem;
+        margin: 0 auto;
+        height: 100vh;
+        color: dimgray;
+        padding: 1rem;
+      }
+    </style>
+
+    <div class="content">
+      <span>Hello, world!</span>
+    </div>
+
+  </template>
+
+  <script>
+    class DashboardApp extends Polymer.Element {
+      static get is() { return 'dashboard-app'; }
+      static get properties() { return {}; }
+    }
+
+    window.customElements.define(DashboardApp.is, DashboardApp);
+  </script>
+</dom-module>

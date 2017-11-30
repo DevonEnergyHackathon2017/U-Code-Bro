@@ -1,0 +1,55 @@
+{
+    [
+        {
+        "h2oGallons": 10000,
+        "proppantConcentrationPercent" : 0,
+        "sandLbs": 0
+        },
+        {
+        "h2oGallons": 10000,
+        "proppantConcentrationPercent" : 25,
+        "sandLbs": 2500
+        },
+        {
+        "h2oGallons": 10000,
+        "proppantConcentrationPercent" : 50,
+        "sandLbs": 5000
+        },
+        {
+        "h2oGallons": 10000,
+        "proppantConcentrationPercent" : 75,
+        "sandLbs": 7500
+        },
+        {
+        "h2oGallons": 10000,
+        "proppantConcentrationPercent" : 100,
+        "sandLbs": 10000
+        },
+        {
+        "h2oGallons": 10000,
+        "proppantConcentrationPercent" : 125,
+        "sandLbs": 12500
+        },
+        {
+        "h2oGallons": 10000,
+        "proppantConcentrationPercent" : 150,
+        "sandLbs": 15000
+        },
+        {
+        "h2oGallons": 10000,
+        "proppantConcentrationPercent" : 175,
+        "sandLbs": 17500
+        },
+        {
+        "h2oGallons": 10000,
+        "proppantConcentrationPercent" : 200,
+        "sandLbs": 20000
+        },
+        {
+        "h2oGallons": 12280,
+        "proppantConcentrationPercent" : "Flush",
+        "sandLbs": 0
+        },
+
+    ]
+}

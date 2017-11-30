@@ -1,0 +1,73 @@
+<link rel="import" href="../tpc/polymer/polymer-element.html">
+<link rel="import" href="../tpc/paper-tabs/paper-tabs.html">
+<link rel="import" href="../tpc/iron-pages/iron-pages.html">
+
+<link rel="import" href="/configuration/frac-plan.html">
+<link rel="import" href="../main-styles.html">
+<link rel="import" href="../header-ribbon.html">
+
+<dom-module id="frac-details">
+  <template>
+    <style include="main-styles">
+      .tab-container {
+        height: 100%;
+      }
+
+    </style>
+
+      <iron-ajax
+              id="fracPlanLoader"
+              auto,
+              url="[[urlFracPlanLoader]]"
+              method="get"
+              content-type="application/json"
+              handle-as="json"
+              last-response="{{fracPlanData}}"
+      ></iron-ajax>
+
+    <h2>[[prop1]]</h2>
+        <header-ribbon></header-ribbon>
+    </div>
+
+    <div class="tab-container">
+        <paper-tabs selected="{{selected}}">
+          <paper-tab>Frac Plan</paper-tab>
+          <paper-tab>Log Properties</paper-tab>
+          <paper-tab>Core Study</paper-tab>
+          <paper-tab>D Fit Test</paper-tab>
+        </paper-tabs>
+       <iron-pages selected="{{selected}}">
+        <frac-plan></frac-plan>
+        <div>Log Properties</div>
+        <div>Core Study</div>
+        <div>D Fit Test</div>
+      </iron-pages>
+    </div>
+
+  </template>
+
+  <script>
+
+    class FracDetails extends Polymer.Element {
+      static get is() { return 'frac-details'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'Frac Details'
+          },
+          selected: {
+            type: Number,
+            value: 0
+          },
+          urlFracPlanLoader : {
+            type: String,
+            value: 'C:\\Work\\Hackathon\\U-Code-Bro\\pub\\configuration\\data\\FracPlanConfig'
+          },
+          fracPlanData: Object,
+        };
+      }
+    }
+    window.customElements.define(FracDetails.is, FracDetails);
+  </script>
+</dom-module>

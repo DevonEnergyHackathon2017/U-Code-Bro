@@ -1,0 +1,12 @@
+{
+    "wellName": "Bishop A #10"
+    "stages": 30,
+    "currenStage": 12,
+    "estCost": 2400000,
+    "currentCost": 6000000,
+    "score":  100,
+    "estScore": 42,
+    "stageLengthFt": 200,
+    "estCostPerStage": 20000,
+    "estDurPerStageHrs": 2
+}

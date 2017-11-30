@@ -1,0 +1,18 @@
+<link rel="import" href="/tpc/polymer/polymer-element.html">
+<link rel="import" href="/main-styles.html">
+
+<dom-module id="time-series">
+  <template>
+    <style include="main-styles">
+    </style>
+  </template>
+
+  <script>
+    class TimeSeries extends Polymer.Element {
+      static get is() { return 'time-series'; }
+      static get properties() { return {}; }
+    }
+
+    window.customElements.define(TimeSeries.is, TimeSeries);
+  </script>
+</dom-module>
