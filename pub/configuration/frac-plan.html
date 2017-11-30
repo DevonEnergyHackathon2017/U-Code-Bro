@@ -1,0 +1,84 @@
+<link rel="import" href="../tpc/polymer/polymer-element.html">
+<link rel="import" href="../main-styles.html">
+
+<dom-module id="frac-plan">
+  <template>
+    <style include="main-styles">
+      .tab-container {
+        height: 100%;
+      }
+      .title {
+        font-weight: bold;
+      }
+    </style>
+
+      <iron-ajax
+              id="fracPlanLoader"
+              auto,
+              url="[[urlFracPlanLoader]]"
+              method="get"
+              content-type="application/json"
+              handle-as="json"
+              last-response="{{fracPlanData}}"
+      ></iron-ajax>
+
+      <iron-ajax
+              id="proppantLoader"
+              auto,
+              url="[[urlProppantLoader]]"
+              method="get"
+              content-type="application/json"
+              handle-as="json"
+              last-response="{{proppantData}}"
+      ></iron-ajax>
+
+    <div class="title">Frac Plan</div>
+
+
+      <div class="data">
+          <div class="labels">
+              <span>Status</span>
+              <span>Suction Pressure</span>
+              <span>Discharge Pressure</span>
+              <span>RPMs</span>
+              <span>Max Rate</span>
+              <span>Cur. Rate</span>
+              <span>Run Hours</span>
+          </div>
+          <div class="values">
+              <span>[[statusLabel]]</span>
+              <span>[[status.SuctionPressure]] psi</span>
+              <span>[[status.DischargePressure]] psi</span>
+              <span>[[status.RPM]]</span>
+              <span>[[compressor.Throughput]] Mscf/d</span>
+              <span>[[status.GasRate]] Mscf/d</span>
+              <span>[[status.RunHours]]</span>
+          </div>
+      </div>
+
+
+
+  </template>
+
+  <script>
+
+    class FracPlan extends Polymer.Element {
+      static get is() { return 'frac-plan'; }
+      static get properties() {
+        return {
+            urlFracPlanLoader : {
+              type: String,
+              value: 'C:\\Work\\Hackathon\\U-Code-Bro\\pub\\configuration\\data\\FracPlanConfig'
+            },
+            urlProppantLoader : {
+                type: String,
+                value: 'C:\\Work\\Hackathon\\U-Code-Bro\\pub\\configuration\\data\\ProppantConfig'
+            },
+            fracPlanData: Object,
+            proppantData: Object
+        };
+      }
+    }
+    window.customElements.define(FracPlan.is, FracPlan);
+  </script>
+</dom-module>
