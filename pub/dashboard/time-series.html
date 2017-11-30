@@ -1,16 +1,104 @@
 <link rel="import" href="/tpc/polymer/polymer-element.html">
+<link rel="import" href="/tpc/iron-ajax/iron-ajax.html">
+<link rel="import" href="/tpc/vaadin-charts/vaadin-charts.html">
 <link rel="import" href="/main-styles.html">
+<script src="/tpc/moment/moment.js"></script>
 
 <dom-module id="time-series">
   <template>
     <style include="main-styles">
+      .chart {
+        height: 400px;
+      }
     </style>
+
+    <iron-ajax auto url="/data/time-series-small" last-response="{{input}}" handle-as="json"></iron-ajax>
+
+    <div class="chart">
+      <vaadin-area-chart>
+        <chart-title>Time-Series</chart-title>
+        <x-axis type="datetime">
+          <crosshair></crosshair>
+        </x-axis>
+        <tooltip shared="true" value-decimals="2"></tooltip>
+
+        <y-axis id="axisTreatingPressure" min="0" visible="false"></y-axis>
+        <data-series name="Treating Pressure" y-axis="axisTreatingPressure" data="[[data.TreatingPressure]]"></data-series>
+
+        <y-axis id="axisSlurryRate" min="0" visible="false"></y-axis>
+        <data-series name="Slurry Rate" y-axis="axisSlurryRate" data="[[data.SlurryRate]]"></data-series>
+
+        <y-axis id="axisBlenderPropConc" min="0" visible="false"></y-axis>
+        <data-series name="Blender Prop Conc" y-axis="axisBlenderPropConc" data="[[data.BlenderPropConc]]"></data-series>
+
+        <y-axis id="axisCalcBHPropConc" min="0" visible="false"></y-axis>
+        <data-series name="Calc BH Prop Conc" y-axis="axisCalcBHPropConc" data="[[data.CalcBHPropConc]]"></data-series>
+
+        <y-axis id="axisFrictionReducer" min="0" visible="false"></y-axis>
+        <data-series name="Friction Reducer" y-axis="axisFrictionReducer" data="[[data.FrictionReducer]]" type="line"></data-series>
+
+        <y-axis id="axisClayStabalizer" min="0" visible="false"></y-axis>
+        <data-series name="Clay Stabalizer" y-axis="axisClayStabalizer" data="[[data.ClayStabalizer]]" type="line"></data-series>
+
+        <y-axis id="axisSurfactant" min="0" visible="false"></y-axis>
+        <data-series name="Surfactant" y-axis="axisSurfactant" data="[[data.Surfactant]]" type="line"></data-series>
+
+        <y-axis id="axisBiocide" min="0" visible="false"></y-axis>
+        <data-series name="Biocide" y-axis="axisBiocide" data="[[data.Biocide]]" type="line"></data-series>
+
+      </vaadin-area-chart>
+    </div>
+
   </template>
 
   <script>
     class TimeSeries extends Polymer.Element {
       static get is() { return 'time-series'; }
-      static get properties() { return {}; }
+      static get properties() {
+        return {
+          input: Array
+          , data: { type: Array, computed: 'makeData(input)' }
+          , fields: { type: Array, computed: 'makeFields()' }
+        };
+      }
+
+      getData(data) {
+        return data[0].data;
+      }
+
+      makeFields() {
+        const results = [
+          { name: 'Treating Pressure' },
+          { name: 'Slurry Rate' },
+          { name: 'Blender Prop Conc' },
+          { name: 'Calc BH Prop Conc' },
+          { name: 'Friction Reducer' },
+          { name: 'Clay Stabilizer' },
+          { name: 'Surfactant' },
+          { name: 'Biocide' }
+        ];
+
+        results.forEach(v => v.key = v.name.replace(/ /g, ''));
+        results.forEach(v => v.yAxis = 'axis' + v.key);
+
+        return results;
+      }
+
+      makeData(input) {
+        const results = {};
+
+        if (input && input.Items) {
+          this.fields.forEach(v => {
+            const items = input.Items.filter(i => i.Name === v.name);
+            if (items && items.length > 0) {
+              results[v.key] = items[0].Items
+                .map(i => { return { x: moment(i.Timestamp).valueOf(), y: i.Value }; });
+            }
+          });
+        }
+
+        return results;
+      }
     }
 
     window.customElements.define(TimeSeries.is, TimeSeries);

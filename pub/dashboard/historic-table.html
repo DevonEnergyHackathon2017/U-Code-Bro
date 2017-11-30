@@ -1,16 +1,24 @@
 <link rel="import" href="/tpc/polymer/polymer-element.html">
+<link rel="import" href="/tpc/iron-ajax/iron-ajax.html">
 <link rel="import" href="/main-styles.html">
 
-<dom-module is="historic-table">
+<dom-module id="historic-table">
   <template>
     <style include="main-styles">
     </style>
+
+    <iron-ajax auto url="/data/job-log" last-response="{{input}}"></iron-ajax>
+
   </template>
 
   <script>
     class HistoricTable extends Polymer.Element {
       static get is() { return 'historic-table'; }
-      static get properties() { return {}; }
+      static get properties() {
+        return {
+          input: Array
+        };
+      }
     }
 
     window.customElements.define(HistoricTable.is, HistoricTable);
