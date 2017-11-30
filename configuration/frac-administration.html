@@ -1,13 +1,36 @@
 <link rel="import" href="../pub/tpc/polymer/polymer-element.html">
+<link rel="import" href="../pub/tpc/paper-tabs/paper-tabs.html">
+<link rel="import" href="../pub/tpc/iron-pages/iron-pages.html">
+
+<link rel="import" href="../pub/main-styles.html">
 
 <dom-module id="frac-administration">
   <template>
-    <style>
-      :host {
-        display: block;
+    <style include="main-styles">
+      .tab-container {
+        height: 100%;
       }
     </style>
-    <h2>Hello [[prop1]]!</h2>
+
+    <h2>[[prop1]]</h2>
+
+    <div class="tab-container">
+        <paper-tabs selected="{{selected}}">
+          <paper-tab>Well</paper-tab>
+          <paper-tab>Stages</paper-tab>
+          <paper-tab>Events</paper-tab>
+          <paper-tab>Actions</paper-tab>
+          <paper-tab>Notification List</paper-tab>
+        </paper-tabs>
+       <iron-pages selected="{{selected}}">
+        <div>Well Component</div>
+        <div>Stages Component</div>
+        <div>Events Component</div>
+        <div>Actions Component</div>
+        <div>Notifications Component</div>
+      </iron-pages>
+    </div>
+
   </template>
 
   <script>
@@ -18,12 +41,15 @@
         return {
           prop1: {
             type: String,
-            value: 'Administration Screen'
+            value: 'Frac Administration'
+          },
+          selected: {
+            type: Number,
+            value: 0
           }
         };
       }
     }
-
     window.customElements.define(FracAdministration.is, FracAdministration);
   </script>
 </dom-module>
