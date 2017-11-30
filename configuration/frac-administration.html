@@ -1,0 +1,29 @@
+<link rel="import" href="../pub/tpc/polymer/polymer-element.html">
+
+<dom-module id="frac-administration">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+
+    class FracAdministration extends Polymer.Element {
+      static get is() { return 'frac-administration'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'Administration Screen'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(FracAdministration.is, FracAdministration);
+  </script>
+</dom-module>
