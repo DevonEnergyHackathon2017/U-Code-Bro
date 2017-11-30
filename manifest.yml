@@ -1,0 +1,6 @@
+---
+applications:
+- name: frackenstein
+  buildpack: https://github.com/cloudfoundry/nodejs-buildpack
+  command: node app.js
+
