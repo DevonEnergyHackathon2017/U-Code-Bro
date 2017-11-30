@@ -1,0 +1,46 @@
+<link rel="import" href="/tpc/polymer/polymer-element.html">
+<link rel="import" href="/main-styles.html">
+
+
+<dom-module id="alert-details">
+  <template>
+    <style include="main-styles">
+      .button {
+        padding: 20px;
+      }
+      .button:hover {
+        cursor: pointer;
+      }
+    </style>
+
+    <h2>Alert Details</h2>
+
+    <template is="dom-repeat" items="[[alerts]]">
+      <div>[[item.text]]</div>
+      <div>
+        <span class="button" on-click="[[dismiss]]">Dismiss</span>
+        <span class="button" on-click="[[bypass]]">Bypass</span>
+      </div>
+    </template>
+
+  </template>
+
+  <script>
+    class AlertDetails extends Polymer.Element {
+      static get is() { return 'alert-details'; }
+      static get properties() {
+        return {
+          alertCode: Number
+        };
+      }
+
+      dismiss(event) {
+      }
+
+      bypass(event) {
+      }
+    }
+
+    window.customElements.define(AlertDetails.is, AlertDetails);
+  </script>
+</dom-module>

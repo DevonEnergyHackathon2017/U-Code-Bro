@@ -21,30 +21,31 @@
           <crosshair></crosshair>
         </x-axis>
         <tooltip shared="true" value-decimals="2"></tooltip>
+        <legend layout="horizontal" align="center" item-width="160"></legend>
 
         <y-axis id="axisTreatingPressure" min="0" visible="false"></y-axis>
-        <data-series name="Treating Pressure" y-axis="axisTreatingPressure" data="[[data.TreatingPressure]]"></data-series>
+        <data-series name="Treating Pressure" y-axis="axisTreatingPressure" data="[[data.TreatingPressure]]" crop-threshold="200000"></data-series>
 
         <y-axis id="axisSlurryRate" min="0" visible="false"></y-axis>
-        <data-series name="Slurry Rate" y-axis="axisSlurryRate" data="[[data.SlurryRate]]"></data-series>
+        <data-series name="Slurry Rate" y-axis="axisSlurryRate" data="[[data.SlurryRate]]" crop-threshold="200000"></data-series>
 
         <y-axis id="axisBlenderPropConc" min="0" visible="false"></y-axis>
-        <data-series name="Blender Prop Conc" y-axis="axisBlenderPropConc" data="[[data.BlenderPropConc]]"></data-series>
+        <data-series name="Blender Prop Conc" y-axis="axisBlenderPropConc" data="[[data.BlenderPropConc]]" crop-threshold="200000"></data-series>
 
         <y-axis id="axisCalcBHPropConc" min="0" visible="false"></y-axis>
-        <data-series name="Calc BH Prop Conc" y-axis="axisCalcBHPropConc" data="[[data.CalcBHPropConc]]"></data-series>
+        <data-series name="Calc BH Prop Conc" y-axis="axisCalcBHPropConc" data="[[data.CalcBHPropConc]]" crop-threshold="200000"></data-series>
 
         <y-axis id="axisFrictionReducer" min="0" visible="false"></y-axis>
-        <data-series name="Friction Reducer" y-axis="axisFrictionReducer" data="[[data.FrictionReducer]]" type="line"></data-series>
+        <data-series name="Friction Reducer" y-axis="axisFrictionReducer" data="[[data.FrictionReducer]]" type="line" crop-threshold="200000"></data-series>
 
         <y-axis id="axisClayStabalizer" min="0" visible="false"></y-axis>
-        <data-series name="Clay Stabalizer" y-axis="axisClayStabalizer" data="[[data.ClayStabalizer]]" type="line"></data-series>
+        <data-series name="Clay Stabalizer" y-axis="axisClayStabalizer" data="[[data.ClayStabalizer]]" type="line" crop-threshold="200000"></data-series>
 
         <y-axis id="axisSurfactant" min="0" visible="false"></y-axis>
-        <data-series name="Surfactant" y-axis="axisSurfactant" data="[[data.Surfactant]]" type="line"></data-series>
+        <data-series name="Surfactant" y-axis="axisSurfactant" data="[[data.Surfactant]]" type="line" crop-threshold="200000"></data-series>
 
         <y-axis id="axisBiocide" min="0" visible="false"></y-axis>
-        <data-series name="Biocide" y-axis="axisBiocide" data="[[data.Biocide]]" type="line"></data-series>
+        <data-series name="Biocide" y-axis="axisBiocide" data="[[data.Biocide]]" type="line" crop-threshold="200000"></data-series>
 
       </vaadin-area-chart>
     </div>

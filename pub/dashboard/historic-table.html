@@ -1,13 +1,41 @@
 <link rel="import" href="/tpc/polymer/polymer-element.html">
 <link rel="import" href="/tpc/iron-ajax/iron-ajax.html">
+<link rel="import" href="/tpc/iron-icon/iron-icon.html">
+<link rel="import" href="/tpc/iron-icons/iron-icons.html">
 <link rel="import" href="/main-styles.html">
+<script src="/tpc/moment/moment.js"></script>
 
 <dom-module id="historic-table">
   <template>
     <style include="main-styles">
+      table {
+        width: 100%;
+        background-color: ghostwhite;
+      }
+      td {
+        padding: 5px 15px;
+      }
+      h2 {
+        text-align: center;
+      }
     </style>
 
-    <iron-ajax auto url="/data/job-log" last-response="{{input}}"></iron-ajax>
+    <iron-ajax auto url="/data/job-log" last-response="{{data}}"></iron-ajax>
+
+    <h2>Job History</h2>
+
+    <table>
+      <template is="dom-repeat" items="[[data]]">
+        <tr>
+          <td>
+            <iron-icon icon="[[getIcon(item)]]"></iron-icon>
+          </td>
+          <td width="100%">[[item.key]]</td>
+          <td nowrap>[[item.stage]]</td>
+          <td nowrap>[[formatDate(item.when)]]</td>
+        </tr>
+      </template>
+    </table>
 
   </template>
 
@@ -16,8 +44,35 @@
       static get is() { return 'historic-table'; }
       static get properties() {
         return {
-          input: Array
+          data: Array
         };
+      }
+
+      formatDate(date) {
+        return moment(date).toISOString();
+      }
+
+      getIcon(data) {
+        //Screen out avoidance = Pan-tool; Stage Bypass = Perm-Phone-Msg; Shut Down = Cancel; Manual = Account-Circle; Stage Start = Remove-Circle-Outline; Stage End = Remove-Circle
+        switch (data.key) {
+          case 'Screenout avoidance':
+            return 'icons:pan-tool';
+
+          case 'Stage Bypass':
+            return 'icons:perm-phone-msg';
+
+          case 'Shut Down':
+            return 'icons:cancel';
+
+          case 'Manual Intervention':
+            return 'icons:account-circle';
+
+          case 'Stage Start':
+            return 'icons:remove-circle-outline';
+
+          case 'Stage End':
+            return 'icons:remove-circle';
+        }
       }
     }
 

@@ -1,0 +1,24 @@
+<link rel="import" href="/tpc/polymer/polymer-element.html">
+<link rel="import" href="main-styles.html">
+<link rel="import" href="/mocker/catastrophic-event.html">
+<link rel="import" href="/mocker/continuous-data.html">
+
+<dom-module id="mock-app">
+  <template>
+    <style include="main-styles">
+    </style>
+
+    <continuous-data></continuous-data>
+    <catastrophic-event></catastrophic-event>
+
+  </template>
+
+  <script>
+    class MockApp extends Polymer.Element {
+      static get is() { return 'mock-app'; }
+      static get properties() { return {}; }
+    }
+
+    window.customElements.define(MockApp.is, MockApp);
+  </script>
+</dom-module>

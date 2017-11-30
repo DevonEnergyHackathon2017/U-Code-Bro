@@ -1,0 +1,18 @@
+<link rel="import" href="/tpc/polymer/polymer-element.html">
+<link rel="import" href="main-styles.html">
+
+<dom-module id="continuous-data">
+  <template>
+    <style include="main-styles">
+    </style>
+  </template>
+
+  <script>
+    class ContinuousData extends Polymer.Element {
+      static get is() { return 'continuous-data'; }
+      static get properties() { return {}; }
+    }
+
+    window.customElements.define(ContinuousData.is, ContinuousData);
+  </script>
+</dom-module>
