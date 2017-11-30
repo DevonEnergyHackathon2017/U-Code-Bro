@@ -5,7 +5,9 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.0",
     "iron-pages": "^2.0.1",
-    "paper-tabs": "^2.0.0"
+    "paper-tabs": "^2.0.0",
+    "iron-image": "^2.1.2",
+    "app-layout": "^2.0.4"
   },
   "devDependencies": {
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
