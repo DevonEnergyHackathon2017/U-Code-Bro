@@ -1,81 +1,56 @@
 <link rel="import" href="../tpc/polymer/polymer-element.html">
+<link rel="import" href="../tpc/iron-label/iron-label.html">
+<link rel="import" href="../tpc/vaadin-grid/vaadin-grid.html">
+
 <link rel="import" href="../main-styles.html">
 
 <dom-module id="frac-plan">
   <template>
     <style include="main-styles">
-      .tab-container {
-        height: 100%;
-      }
       .title {
         font-weight: bold;
+        padding-top: 4rem;
+      }
+      .header {
+
       }
     </style>
-
-      <iron-ajax
-              id="fracPlanLoader"
-              auto,
-              url="[[urlFracPlanLoader]]"
-              method="get"
-              content-type="application/json"
-              handle-as="json"
-              last-response="{{fracPlanData}}"
-      ></iron-ajax>
-
-      <iron-ajax
-              id="proppantLoader"
-              auto,
-              url="[[urlProppantLoader]]"
-              method="get"
-              content-type="application/json"
-              handle-as="json"
-              last-response="{{proppantData}}"
-      ></iron-ajax>
-
-    <div class="title">Frac Plan</div>
-
-
-      <div class="data">
-          <div class="labels">
-              <span>Status</span>
-              <span>Suction Pressure</span>
-              <span>Discharge Pressure</span>
-              <span>RPMs</span>
-              <span>Max Rate</span>
-              <span>Cur. Rate</span>
-              <span>Run Hours</span>
-          </div>
-          <div class="values">
-              <span>[[statusLabel]]</span>
-              <span>[[status.SuctionPressure]] psi</span>
-              <span>[[status.DischargePressure]] psi</span>
-              <span>[[status.RPM]]</span>
-              <span>[[compressor.Throughput]] Mscf/d</span>
-              <span>[[status.GasRate]] Mscf/d</span>
-              <span>[[status.RunHours]]</span>
-          </div>
-      </div>
-
-
-
+    <iron-ajax auto id="fracPlanLoader"  url="/configuration/data/FracPlanConfig" handle-as="json" last-response="{{fracPlanData}}"></iron-ajax>
+    <iron-ajax auto id="proppantLoader"  url="/configuration/data/ProppantConfig" handle-as="json" last-response="{{proppantData}}"></iron-ajax>
+    <div>
+      <div class="title">Frac Plan</div>
+      <vaadin-grid items="[[proppantData]]" width="1200px" size="700">
+        <vaadin-grid-column width="150px" flex-grow="0">
+          <template class="header">H2O Gallons</template>
+          <template>[[item.h2oGallons]]</template>
+        </vaadin-grid-column>
+        <vaadin-grid-column width="250px" flex-grow="0">
+          <template class="header">Proppant Concentrations</template>
+          <template>[[item.proppantConcentrationPercent]]</template>
+        </vaadin-grid-column>
+        <vaadin-grid-column width="180px" flex-grow="0">
+          <template class="header">Sand (lbs)</template>
+          <template>[[item.sandLbs]]</template>
+        </vaadin-grid-column>
+        <vaadin-grid-column width="150px" flex-grow="0">
+          <template class="header">Length (ft)</template>
+          <template>[[item.length]]</template>
+        </vaadin-grid-column>
+      </vaadin-grid>
+    </div>
   </template>
 
   <script>
-
     class FracPlan extends Polymer.Element {
       static get is() { return 'frac-plan'; }
       static get properties() {
         return {
-            urlFracPlanLoader : {
-              type: String,
-              value: 'C:\\Work\\Hackathon\\U-Code-Bro\\pub\\configuration\\data\\FracPlanConfig'
-            },
-            urlProppantLoader : {
-                type: String,
-                value: 'C:\\Work\\Hackathon\\U-Code-Bro\\pub\\configuration\\data\\ProppantConfig'
+            selected: {
+              type: Number,
+              value: 0
             },
             fracPlanData: Object,
-            proppantData: Object
+            proppantData: Array
         };
       }
     }

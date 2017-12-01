@@ -1,6 +1,7 @@
 <link rel="import" href="../tpc/polymer/polymer-element.html">
 <link rel="import" href="../tpc/paper-tabs/paper-tabs.html">
 <link rel="import" href="../tpc/iron-pages/iron-pages.html">
+<link rel="import" href="../tpc/iron-ajax/iron-ajax.html">
 
 <link rel="import" href="/configuration/frac-plan.html">
 <link rel="import" href="../main-styles.html">
@@ -9,40 +10,81 @@
 <dom-module id="frac-details">
   <template>
     <style include="main-styles">
-      .tab-container {
-        height: 100%;
-      }
-
+        .data-container {
+            padding-top: 5.7rem;
+        }
+        .tab-container {
+            padding-top: 2.8rem;
+            height: 100%;
+        }
+        .titleregion {
+            width: 1200px;
+        }
+        .welltitle {
+            width: 12rem;
+        }
+        .welldata {
+            width: 12rem;
+        }
     </style>
 
-      <iron-ajax
-              id="fracPlanLoader"
-              auto,
-              url="[[urlFracPlanLoader]]"
-              method="get"
-              content-type="application/json"
-              handle-as="json"
-              last-response="{{fracPlanData}}"
-      ></iron-ajax>
+      <iron-ajax auto id="fracPlanLoader"  url="/configuration/data/FracPlanConfig" handle-as="json" last-response="{{fracPlanData}}"></iron-ajax>
 
-    <h2>[[prop1]]</h2>
-        <header-ribbon></header-ribbon>
-    </div>
+      <header-ribbon></header-ribbon>
 
-    <div class="tab-container">
-        <paper-tabs selected="{{selected}}">
-          <paper-tab>Frac Plan</paper-tab>
-          <paper-tab>Log Properties</paper-tab>
-          <paper-tab>Core Study</paper-tab>
-          <paper-tab>D Fit Test</paper-tab>
-        </paper-tabs>
-       <iron-pages selected="{{selected}}">
-        <frac-plan></frac-plan>
-        <div>Log Properties</div>
-        <div>Core Study</div>
-        <div>D Fit Test</div>
-      </iron-pages>
-    </div>
+      <div class="data-container">
+          <table class="titleregion">
+              <tr>
+                  <td class='welltitle'>
+                      <iron-label>Well Name</iron-label>
+                  </td>
+                  <td class='welltitle'>
+                      <iron-label>Stage</iron-label>
+                  </td>
+                  <td class='welltitle'>
+                      <iron-label>Rolling Cost</iron-label>
+                  </td>
+                  <td class='welltitle'>
+                      <iron-label >Time</iron-label>
+                  </td>
+                  <td class='welltitle'>
+                      <iron-label >Score</iron-label>
+                  </td>
+              </tr>
+              <tr>
+                  <td class='welldata'>
+                      <iron-label>{{fracPlanData.wellName}}</iron-label>
+                  </td>
+                  <td class='welldata'>
+                      <iron-label>{{fracPlanData.currentStage}} / {{fracPlanData.stages}}</iron-label>
+                  </td>
+                  <td class='welldata'>
+                      <iron-label>{{fracPlanData.currentCost}} / {{fracPlanData.estCost}}</iron-label>
+                  </td>
+                  <td class='welldata'>
+                      <iron-label >{{fracPlanData.currentTime}} / {{fracPlanData.estTimeHrs}}</iron-label>
+                  </td>
+                  <td class='welldata'>
+                      <iron-label >{{fracPlanData.currentScore}} / {{fracPlanData.estScore}}</iron-label>
+                  </td>
+              </tr>
+          </table>
+      </div>
+        <div class="tab-container">
+            <paper-tabs selected="{{selected}}">
+                <paper-tab>Frac Plan</paper-tab>
+                <paper-tab>Core Study</paper-tab>
+                <paper-tab>Log Properties</paper-tab>
+                <paper-tab>D Fit Test</paper-tab>
+            </paper-tabs>
+            <iron-pages selected="{{selected}}">
+                <frac-plan></frac-plan>
+                <div>Core Study</div>
+                <div>Log Properties</div>
+                <div>D Fit Test</div>
+            </iron-pages>
+        </div>
+      </div>
 
   </template>
 
@@ -52,19 +94,11 @@
       static get is() { return 'frac-details'; }
       static get properties() {
         return {
-          prop1: {
-            type: String,
-            value: 'Frac Details'
-          },
           selected: {
             type: Number,
             value: 0
           },
-          urlFracPlanLoader : {
-            type: String,
-            value: 'C:\\Work\\Hackathon\\U-Code-Bro\\pub\\configuration\\data\\FracPlanConfig'
-          },
-          fracPlanData: Object,
+          fracPlanData: Object
         };
       }
     }
