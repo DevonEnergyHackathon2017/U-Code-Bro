@@ -1,0 +1,70 @@
+<link rel="import" href="../tpc/polymer/polymer-element.html">
+<link rel="import" href="../tpc/paper-tabs/paper-tabs.html">
+<link rel="import" href="../tpc/iron-pages/iron-pages.html">
+<link rel="import" href="../tpc/iron-ajax/iron-ajax.html">
+
+<link rel="import" href="/configuration/frac-menu.html">
+<link rel="import" href="/configuration/frac-plan.html">
+<link rel="import" href="../main-styles.html">
+<link rel="import" href="../header-ribbon.html">
+
+<dom-module id="frac-list">
+  <template>
+    <style include="main-styles">
+        .titlecontainer {
+            padding-top: 20px;
+            width: 1200px;
+        }
+        .data-container {
+            padding-top: 1.8rem;
+            width: 100%;
+            padding-bottom: 0.7rem;
+        }
+        paper-button.primary {
+            background-color: #007ACC;
+            color: #fff;
+            --paper-button-raised-keyboard-focus: {
+                background-color: #007ACC !important;
+                color: #fff !important;
+            };
+        }
+        .maintitle {
+            font-family: Open Sans;
+            font-size: 30px;
+            color: #2C404C;
+            letter-spacing: 0;
+        }
+    </style>
+      <iron-ajax auto id="fracPlanListLoader"  url="/configuration/data/FracPlanListConfig" handle-as="json" last-response="{{fracPlaListData}}"></iron-ajax>
+      <header-ribbon></header-ribbon>
+      <frac-menu></frac-menu>
+        <table class="titlecontainer">
+            <tr>
+                <td class="maintitle">Frac Plans</td>
+                <td align="right"><paper-button class="primary" raised>Add New Plan</paper-button></td>
+            </tr>
+        </table>
+
+
+      <div class="data-container">
+      </div>
+
+  </template>
+
+  <script>
+
+    class FracList extends Polymer.Element {
+      static get is() { return 'frac-list'; }
+      static get properties() {
+        return {
+          selected: {
+            type: Number,
+            value: 0
+          },
+          fracPlanListData: Array
+        };
+      }
+    }
+    window.customElements.define(FracList.is, FracList);
+  </script>
+</dom-module>

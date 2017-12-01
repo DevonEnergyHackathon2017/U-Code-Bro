@@ -1,25 +1,98 @@
 <link rel="import" href="../tpc/polymer/polymer-element.html">
 <link rel="import" href="../tpc/iron-label/iron-label.html">
 <link rel="import" href="../tpc/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../tpc/paper-button/paper-button.html">
 
 <link rel="import" href="../main-styles.html">
 
 <dom-module id="frac-plan">
   <template>
     <style include="main-styles">
-      .title {
-        font-weight: bold;
-        padding-top: 4rem;
+      vaadin-grid {
+        height: auto;
+        border: 0;
+      }
+      .data-container {
+        padding-top: 1.8rem;
+        padding-bottom: 2.0rem;
       }
       .header {
 
       }
+      .welltitle {
+        width: 14rem;
+        color: #59717F;
+      }
+      .welldata {
+        width: 14rem;
+        border-bottom: 1px solid #59717F;
+      }
+      .maintitle {
+        padding-bottom: 0.7rem;
+        font-size: 20px;
+        color: #748B99;
+      }
+      .buttonarea {
+        width: 900px;
+        justify-content: right;
+        padding-top: 0.8rem;
+      }
+      paper-button.primary {
+        background-color: #364C59;
+        color: #fff;
+        --paper-button-raised-keyboard-focus: {
+          background-color: #364C59 !important;
+          color: #fff !important;
+        };
+      }
+      paper-button.other {
+        background-color: #fff;
+        color: #007ACC;
+        --paper-button-raised-keyboard-focus: {
+          background-color: #007ACC !important;
+          color: #fff !important;
+        };
+      }
+
     </style>
     <iron-ajax auto id="fracPlanLoader"  url="/configuration/data/FracPlanConfig" handle-as="json" last-response="{{fracPlanData}}"></iron-ajax>
     <iron-ajax auto id="proppantLoader"  url="/configuration/data/ProppantConfig" handle-as="json" last-response="{{proppantData}}"></iron-ajax>
-    <div>
-      <div class="title">Frac Plan</div>
-      <vaadin-grid items="[[proppantData]]" width="1200px" size="700">
+    <div class="data-container">
+      <div>
+        <div class="maintitle">Frac Plan</div>
+        <table class="titleregion">
+          <tr>
+            <td class='welltitle'>
+              <iron-label>Stages</iron-label>
+            </td>
+            <td class='welltitle'>
+              <iron-label>Stage Length (ft)</iron-label>
+            </td>
+            <td class='welltitle'>
+              <iron-label>Est. Cost Per Stage</iron-label>
+            </td>
+            <td class='welltitle'>
+              <iron-label >Est. Duration Per Stage (Hrs)</iron-label>
+            </td>
+          </tr>
+          <tr>
+            <td class='welldata'>
+              <iron-label>{{fracPlanData.stages}}</iron-label>
+            </td>
+            <td class='welldata'>
+              <iron-label>{{fracPlanData.stageLengthFt}}</iron-label>
+            </td>
+            <td class='welldata'>
+              <iron-label>{{fracPlanData.estCostPerStage}}</iron-label>
+            </td>
+            <td class='welldata'>
+              <iron-label >{{fracPlanData.estDurPerStageHrs}}</iron-label>
+            </td>
+         </tr>
+        </table>
+      </div>
+    </div>
+      <vaadin-grid items="[[proppantData]]">
         <vaadin-grid-column width="150px" flex-grow="0">
           <template class="header">H2O Gallons</template>
           <template>[[item.h2oGallons]]</template>
@@ -37,7 +110,13 @@
           <template>[[item.length]]</template>
         </vaadin-grid-column>
       </vaadin-grid>
-    </div>
+    <table class="buttonarea">
+      <tr>
+        <td width="800px"></td>
+        <td><paper-button class="other" raised>Cancel</paper-button></td>
+        <td><paper-button class="primary" raised>Save</paper-button></td>
+      </tr>
+    </table>
   </template>
 
   <script>

@@ -3,6 +3,7 @@
 <link rel="import" href="../tpc/iron-pages/iron-pages.html">
 <link rel="import" href="../tpc/iron-ajax/iron-ajax.html">
 
+<link rel="import" href="/configuration/frac-menu.html">
 <link rel="import" href="/configuration/frac-plan.html">
 <link rel="import" href="../main-styles.html">
 <link rel="import" href="../header-ribbon.html">
@@ -11,10 +12,13 @@
   <template>
     <style include="main-styles">
         .data-container {
-            padding-top: 5.7rem;
+            padding-top: 1.8rem;
+            width: 100%;
+            padding-bottom: 0.7rem;
+            background-color: #EBEFF2;
         }
-        .tab-container {
-            padding-top: 2.8rem;
+       .tab-container {
+            padding-top: 0.4rem;
             height: 100%;
         }
         .titleregion {
@@ -22,16 +26,16 @@
         }
         .welltitle {
             width: 12rem;
+            color: #59717F;
         }
         .welldata {
             width: 12rem;
+            border-bottom: 1px solid #59717F;
         }
     </style>
-
       <iron-ajax auto id="fracPlanLoader"  url="/configuration/data/FracPlanConfig" handle-as="json" last-response="{{fracPlanData}}"></iron-ajax>
-
       <header-ribbon></header-ribbon>
-
+      <frac-menu></frac-menu>
       <div class="data-container">
           <table class="titleregion">
               <tr>
@@ -70,7 +74,7 @@
               </tr>
           </table>
       </div>
-        <div class="tab-container">
+      <div class="tab-container">
             <paper-tabs selected="{{selected}}">
                 <paper-tab>Frac Plan</paper-tab>
                 <paper-tab>Core Study</paper-tab>
@@ -84,8 +88,6 @@
                 <div>D Fit Test</div>
             </iron-pages>
         </div>
-      </div>
-
   </template>
 
   <script>
