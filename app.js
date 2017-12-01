@@ -6,16 +6,20 @@ try {
 
   const RestServer = require('./src/modules/rest-server');
   const Logger = require('./src/modules/logger');
+  const Mocker = require('./src/data/mocker');
   const logger = new Logger();
+
+  const mocker = new Mocker(logger);
 
   const server = new RestServer(logger)
     .logIncoming()
     .logRequest()
     .parseJsonBody()
     .routes.date()
+    .addRoutes(mocker.addRoutes)
     .routes.static()
     .logResponse()
-    .start(10000);
+    .start();
 
 } catch (ex) {
   console.log(ex);
