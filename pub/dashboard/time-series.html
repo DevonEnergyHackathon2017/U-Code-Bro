@@ -7,21 +7,24 @@
 <dom-module id="time-series">
   <template>
     <style include="main-styles">
-      .chart {
+      .card {
         height: 400px;
+        padding: 10px;
       }
     </style>
 
     <iron-ajax auto url="/data/time-series-small" last-response="{{input}}" handle-as="json"></iron-ajax>
 
-    <div class="chart">
+    <div class="card">
       <vaadin-area-chart>
+        <chart background-color="transparent"></chart>
+        <exporting enabled="false"></exporting>
         <chart-title>Time-Series</chart-title>
         <x-axis type="datetime">
           <crosshair></crosshair>
         </x-axis>
         <tooltip shared="true" value-decimals="2"></tooltip>
-        <legend layout="horizontal" align="center" item-width="160"></legend>
+        <legend layout="horizontal" align="center" item-width="150" background-color="transparent"></legend>
 
         <y-axis id="axisTreatingPressure" min="0" visible="false"></y-axis>
         <data-series name="Treating Pressure" y-axis="axisTreatingPressure" data="[[data.TreatingPressure]]" crop-threshold="200000"></data-series>

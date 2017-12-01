@@ -5,76 +5,50 @@
 <dom-module id="alert-details">
   <template>
     <style include="main-styles">
-      .content {
-        padding: 10px;
-        min-height: 200px;
+      .head-big {
+        background: #E2E8ED;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.22);
+      }
+      .title {
+        margin-bottom: 20px;
+      }
+      .head-little {
         display: flex;
-        flex-direction: column;
+        flex-wrap: nowrap;
+        --iron-icon-height: 40px;
+        --iron-icon-width: 40px;
+        margin-bottom: 20px;
+      }
+      .heading {
+        margin-top: 12px;
+      }
+      .main {
+        padding-top: 10px;
       }
       .buttons {
         display: flex;
       }
       .button {
-        padding: 10px;
-        margin: 10px;
-        font-size: small;
+        margin-left: 20px;
       }
-      .button:hover {
-        cursor: pointer;
-      }
-      .primary {
-        color: rgb(12, 100, 192);
-        background-color: white;
-        border: 1px solid #425866;
-      }
-      .secondary {
-        color: white;
-        background-color: #12108e;
-      }
-      .h1 {
-        font-size: x-large;
-        background-color: #eeeeee;
-        box-shadow: 0 3px 3px 0 #cccccc;
-        padding: 20px;
-      }
-      .h1 .sub {
-        font-size: medium;
-        font-weight: lighter;
-        padding-top: 20px;
-      }
-      .h2 {
-        font-size: large;
-        display: flex;
-        flex-wrap: nowrap;
-        padding: 20px;
-      }
-      .h2 iron-icon {
-        margin: -20px;
-        padding: 0;
-        --iron-icon-height: 40px;
-        --iron-icon-width: 40px;
-      }
-      .h2 iron-icon:hover {
-        cursor: pointer;
-      }
-      :host {
-        width: 100%;
+      .text {
+        height: 100px;
       }
     </style>
 
-    <div class="h1">
-      <div><span>Stage Bypass Advisory</span></div>
-      <div class="sub"><span>[[time]]</span></div>
+    <div class="card head-big">
+      <div class="title">Stage Bypass Advisory</div>
+      <div class="subtitle">[[time]]</div>
     </div>
 
-    <div class="content">
+    <div class="card main">
 
-      <div class="h2">
+      <div class="head-little">
         <div>
           <iron-icon icon="icons:chevron-left"></iron-icon>
         </div>
         <div style="flex-grow: 1;"></div>
-        <span>Alert Details</span>
+        <span class="heading">Alert Details</span>
         <div style="flex-grow: 1;"></div>
         <div>
           <iron-icon icon="icons:chevron-right"></iron-icon>
@@ -82,14 +56,14 @@
       </div>
 
       <template is="dom-if" if="[[!!current]]">
-        <div>[[current.text]]</div>
+        <div class="text">[[current.text]]</div>
 
         <div style="flex-grow: 1;"></div>
 
         <div class="buttons">
           <div style="flex-grow: 1;"></div>
-          <div class="button primary" on-click="[[dismiss]]">Dismiss</div>
-          <div class="button secondary" on-click="[[bypass]]">Bypass</div>
+          <div class="button button-tertiary" on-click="[[dismiss]]">Dismiss</div>
+          <div class="button button-cta" on-click="[[bypass]]">Bypass</div>
         </div>
       </template>
 
