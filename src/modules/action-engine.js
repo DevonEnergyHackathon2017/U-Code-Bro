@@ -1,11 +1,11 @@
-const Twilio = require('twilio');
+// const Twilio = require('twilio');
 const moment = require('moment');
 
 module.exports = class ActionEngine {
   constructor(logger, mocker) {
     this.log = logger;
     this.mock = mocker;
-    this.twilio = Twilio(process.env.twilioId, process.env.twilioAuth);
+    // this.twilio = Twilio(process.env.twilioId, process.env.twilioAuth);
   }
 
   takeActions(actions) {
