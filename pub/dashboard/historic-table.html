@@ -18,14 +18,13 @@
       .row {
         background: #FFFFFF;
         box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.13);
-        padding: 10px;
         margin: 15px 0;
         display: flex;
         flex-wrap: nowrap;
       }
     </style>
 
-    <iron-ajax auto url="/data/job-log" last-response="{{data}}"></iron-ajax>
+    <iron-ajax auto url="/data/job-log" last-response="{{input}}"></iron-ajax>
 
     <div class="card">
 
@@ -33,10 +32,10 @@
 
       <template is="dom-repeat" items="[[display]]">
         <div class="row">
-          <div style="width: 3px;" background-color$=[[getBackgroundColor(item)]]"> </div>
-          <div style="flex-grow: 1;">[[item.key]]</div>
-          <div style="padding: 0 15px;">[[item.stage]]</div>
-          <div style="">[[formatDate(item.when)]]</div>
+          <div style$="[[makeColoredBoxStyle(item)]]">&nbsp;</div>
+          <div style="flex-grow: 1; padding: 10px;">[[item.key]]</div>
+          <div style="padding: 0 15px; padding: 10px;">[[item.stage]]</div>
+          <div style="padding: 10px;">[[formatDate(item.when)]]</div>
         </div>
       </template>
 
@@ -55,10 +54,15 @@
       static get is() { return 'historic-table'; }
       static get properties() {
         return {
-          data: Array
+          input: Array
+          , data: { type: Array, computed: 'setData(input)' }
           , display: { type: Array, computed: 'makeDisplayData(data, size)' }
           , size: { type: Number, value: 5 }
         };
+      }
+
+      setData(input) {
+        return input.reverse();
       }
 
       makeDisplayData(data, size) {
@@ -72,20 +76,25 @@
         this.size += 5;
       }
 
-      getBackgroundColor(data) {
+      makeColoredBoxStyle(data) {
+        let color = "#000000";
         switch (data.key) {
-          case 'Stage Start':
-          case 'Stage End':
-          case 'Screenout avoidance':
-            return '#FFA09C';
+          case 'Shut Down':
+            color = '#FFA09C';
+            break;
 
           case 'Manual Intervention':
+          case 'Screenout Avoidance':
           case 'Stage Bypass':
-            return '#FFE059';
+            color = '#FFE059';
+            break;
 
-          case 'Shut Down':
-            return '#A7E622';
+          case 'Stage Start':
+          case 'Stage End':
+            color = '#A7E622';
+            break;
         }
+        return `width: 3px; background-color:${color};`;
       }
 
       formatDate(date) {

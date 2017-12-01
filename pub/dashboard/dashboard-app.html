@@ -4,6 +4,7 @@
 <link rel="import" href="/dashboard/time-series.html">
 <link rel="import" href="/dashboard/historic-table.html">
 <link rel="import" href="/dashboard/alert-details.html">
+<link rel="import" href="/dashboard/kpi-view.html">
 <link rel="import" href="/header-ribbon.html">
 
 <dom-module id="dashboard-app">
@@ -32,6 +33,10 @@
           <alert-details alerts="[[alerts]]"></alert-details>
         </div>
       </template>
+
+      <div>
+        <kpi-view></kpi-view>
+      </div>
 
       <div>
         <time-series></time-series>
