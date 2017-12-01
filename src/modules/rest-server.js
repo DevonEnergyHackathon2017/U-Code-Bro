@@ -74,6 +74,11 @@ module.exports = class RestServer {
     return this;
   }
 
+  addRoutes(func) {
+    func(this.app);
+    return this;
+  }
+
   start(port, keyFilePath, certFilePath) {
     port = port || process.env.PORT || process.env.Port || process.env.port;
 

@@ -13,6 +13,9 @@
       .title {
         margin-bottom: 20px;
       }
+      .subtitle {
+        text-transform: uppercase;
+      }
       .head-little {
         display: flex;
         flex-wrap: nowrap;
@@ -38,9 +41,11 @@
       }
     </style>
 
+    <iron-ajax id="alertPusher" url="/data/models/alerts" method="post"></iron-ajax>
+
     <div class="card head-big">
-      <div class="title">Stage Bypass Advisory</div>
-      <div class="subtitle">[[time]]</div>
+      <div class="title">Stage Approve Advisory</div>
+      <div class="subtitle">[[formatTime(current.timestamp)]]</div>
     </div>
 
     <div class="card main">
@@ -64,8 +69,13 @@
 
         <div class="buttons">
           <div style="flex-grow: 1;"></div>
-          <div class="button button-tertiary" on-click="[[dismiss]]">Dismiss</div>
-          <div class="button button-cta" on-click="[[bypass]]">Bypass</div>
+          <template is="dom-if" if="[[requiresApproval(current)]]">
+            <div class="button button-tertiary" on-click="dismiss">Dismiss</div>
+            <div class="button button-cta" on-click="approve">Approve</div>
+          </template>
+          <template is="dom-if" if="[[!requiresApproval(current)]]">
+            <div class="button button-cta" on-click="complete">Mark As Completed</div>
+          </template>
         </div>
       </template>
 
@@ -84,21 +94,12 @@
         };
       }
 
-      constructor() {
-        super();
-
-        this.poll = this.poll.bind(this);
+      requiresApproval(current) {
+        return current && current.approval;
       }
 
-      connectedCallback() {
-        super.connectedCallback();
-        setInterval(this.poll, 1000);
-      }
-
-      poll() {
-        const time = moment().format('YYYY-MM-dd, hh:mma');
-        if (this.time !== time)
-          this.time = time;
+      formatTime(stamp) {
+        return moment(stamp).format('YYYY-MM-DD, h:mma');
       }
 
       alertsUpdated(alerts) {
@@ -110,12 +111,30 @@
       }
 
       dismiss(event) {
-        console.log('dismiss');
+        this.handleAlert();
       }
 
-      bypass(event) {
-        console.log('bypass');
+      approve(event) {
+        this.handleAlert();
       }
+
+      complete(event) {
+        this.handleAlert();
+      }
+
+      handleAlert() {
+        const alert = this.current;
+        if (alert) {
+          const pusher = this.$.alertPusher;
+          pusher.headers = {
+            "Content-Type": "application/json"
+          };
+          alert.ack = true;
+          pusher.body = alert;
+          pusher.generateRequest();
+        }
+      }
+
     }
 
     window.customElements.define(AlertDetails.is, AlertDetails);

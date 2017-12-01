@@ -11,15 +11,20 @@
         height: 400px;
         padding: 10px;
       }
+      .heading {
+        margin-top: 10px;
+        text-align: center;
+      }
     </style>
 
     <iron-ajax auto url="/data/time-series-small" last-response="{{input}}" handle-as="json"></iron-ajax>
 
     <div class="card">
+      <div class="heading">Frac Data</div>
       <vaadin-area-chart>
         <chart background-color="transparent"></chart>
         <exporting enabled="false"></exporting>
-        <chart-title>Time-Series</chart-title>
+        <chart-title text="null"></chart-title>
         <x-axis type="datetime">
           <crosshair></crosshair>
         </x-axis>

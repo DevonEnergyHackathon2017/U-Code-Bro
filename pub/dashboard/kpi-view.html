@@ -1,0 +1,85 @@
+<link rel="import" href="/tpc/polymer/polymer-element.html">
+<link rel="import" href="/main-styles.html">
+
+<dom-module id="kpi-view">
+  <template>
+    <style include="main-styles">
+      .card {
+        padding: 0;
+      }
+    </style>
+
+    <div class="card" style="display: flex; flex-direction: column;">
+
+      <div style="display: flex; flex-direction: row; flex-wrap: nowrap; flex-grow: 1; align-items: center; padding: 20px">
+
+        <div style="flex-grow: 1; text-align: center;">
+          <div>
+            <span style="font-size: 45px;">8</span>
+            <span>/30</span>
+          </div>
+          <div>
+            <span>Stages</span>
+          </div>
+        </div>
+
+        <div style="height:70px; border-left: 1px solid black;"></div>
+
+        <div style="flex-grow: 1; text-align: center;">
+          <div>
+            <span style="font-size: 45px;">14</span>
+            <span>hrs</span>
+          </div>
+          <div>
+            <span>Elapsed Time</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid lightgray;"></div>
+
+      <div style="display: flex; flex-direction: row; flex-wrap: nowrap; flex-grow: 1; align-items: center; padding: 20px;">
+        <div style="flex-grow: 1; text-align: center;">
+          <div>
+            <span style="font-size: 30px;">60</span>
+            <span>%</span>
+          </div>
+          <div>
+            <span>Sand</span>
+          </div>
+        </div>
+
+        <div style="flex-grow: 1; text-align: center;">
+          <div>
+            <span style="font-size: 30px;">72</span>
+            <span>%</span>
+          </div>
+          <div>
+            <span>Water</span>
+          </div>
+        </div>
+
+        <div style="flex-grow: 1; text-align: center;">
+          <div>
+            <span style="font-size: 30px;">84</span>
+            <span>%</span>
+          </div>
+          <div>
+            <span>Cost</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+  </template>
+
+  <script>
+    class KpiView extends Polymer.Element {
+      static get is() { return 'kpi-view'; }
+      static get properties() { return {}; }
+    }
+
+    window.customElements.define(KpiView.is, KpiView);
+  </script>
+</dom-module>
