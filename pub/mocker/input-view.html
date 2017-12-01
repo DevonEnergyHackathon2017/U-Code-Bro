@@ -1,0 +1,54 @@
+<link rel="import" href="/tpc/polymer/polymer-element.html">
+<link rel="import" href="/main-styles.html">
+<link rel="import" href="/tpc/iron-ajax/iron-ajax.html">
+<script src="/tpc/moment/moment.js"></script>
+
+<dom-module id="input-view">
+  <template>
+    <style include="main-styles">
+    </style>
+
+    <iron-ajax id="alertPusher" url="/data/models/alerts" method="post"></iron-ajax>
+
+    <div>
+      <div>
+        <textarea id="title" style="height: 25px; width: 200px;"></textarea>
+      </div>
+      <div>
+        <textarea id="text" style="height: 50px; width: 200px;"></textarea>
+      </div>
+      <div>
+        <input id="approval" type="checkbox">
+        <span>Approval Required</span>
+      </div>
+      <div class="button" on-click="addAlert">Add Alert</div>
+    </div>
+  </template>
+
+  <script>
+    class InputView extends Polymer.Element {
+      static get is() { return 'input-view'; }
+      static get properties() { return {}; }
+
+      addAlert(event) {
+        const pusher = this.$.alertPusher;
+        pusher.headers = {
+          "Content-Type": "application/json"
+        };
+        pusher.body = {
+          title: this.$.title.value
+          , text: this.$.text.value
+          , timestamp: moment().toISOString()
+          , approval: this.$.approval.checked
+        };
+
+        this.$.title.value = '';
+        this.$.text.value = '';
+        this.$.approval.checked = false;
+        pusher.generateRequest();
+      }
+    }
+
+    window.customElements.define(InputView.is, InputView);
+  </script>
+</dom-module>

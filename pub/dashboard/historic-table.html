@@ -1,0 +1,109 @@
+<link rel="import" href="/tpc/polymer/polymer-element.html">
+<link rel="import" href="/tpc/iron-ajax/iron-ajax.html">
+<link rel="import" href="/tpc/iron-icon/iron-icon.html">
+<link rel="import" href="/tpc/iron-icons/iron-icons.html">
+<link rel="import" href="/main-styles.html">
+<script src="/tpc/moment/moment.js"></script>
+
+<dom-module id="historic-table">
+  <template>
+    <style include="main-styles">
+      .heading {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+      .load-more {
+        display: flex;
+        flex-wrap: nowrap;
+      }
+      .row {
+        background: #FFFFFF;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.13);
+        margin: 15px 0;
+        display: flex;
+        flex-wrap: nowrap;
+        text-transform: uppercase;
+      }
+    </style>
+
+    <iron-ajax auto url="/data/job-log" last-response="{{input}}"></iron-ajax>
+
+    <div class="card">
+
+      <div class="heading">Job History</div>
+
+      <template is="dom-repeat" items="[[display]]">
+        <div class="row">
+          <div style$="[[makeColoredBoxStyle(item)]]">&nbsp;</div>
+          <div style="flex-grow: 1; padding: 10px;">[[item.key]]</div>
+          <div style="padding: 0 15px; padding: 10px;">[[item.stage]]</div>
+          <div style="padding: 10px;">[[formatDate(item.when)]]</div>
+        </div>
+      </template>
+
+      <div class="load-more">
+        <div style="flex-grow: 1;"></div>
+        <span class="link" on-click="loadMore">Load More</span>
+        <div style="flex-grow: 1;"></div>
+      </div>
+
+    </div>
+
+  </template>
+
+  <script>
+    class HistoricTable extends Polymer.Element {
+      static get is() { return 'historic-table'; }
+      static get properties() {
+        return {
+          input: Array
+          , data: { type: Array, computed: 'setData(input)' }
+          , display: { type: Array, computed: 'makeDisplayData(data, size)' }
+          , size: { type: Number, value: 5 }
+        };
+      }
+
+      setData(input) {
+        return input.reverse();
+      }
+
+      makeDisplayData(data, size) {
+        if (!data)
+          return [];
+
+        return data.slice(0, size);
+      }
+
+      loadMore(event) {
+        this.size += 5;
+      }
+
+      makeColoredBoxStyle(data) {
+        let color = "#000000";
+        switch (data.key) {
+          case 'Shut Down':
+            color = '#FFA09C';
+            break;
+
+          case 'Manual Intervention':
+          case 'Screenout Avoidance':
+          case 'Stage Bypass':
+            color = '#FFE059';
+            break;
+
+          case 'Stage Start':
+          case 'Stage End':
+            color = '#A7E622';
+            break;
+        }
+        return `width: 3px; background-color:${color};`;
+      }
+
+      formatDate(date) {
+        return moment(date).format('HH:mm:ss');
+      }
+    }
+
+    window.customElements.define(HistoricTable.is, HistoricTable);
+  </script>
+</dom-module>

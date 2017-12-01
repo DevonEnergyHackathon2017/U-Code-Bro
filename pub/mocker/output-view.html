@@ -1,0 +1,215 @@
+<link rel="import" href="/tpc/polymer/polymer-element.html">
+<link rel="import" href="/main-styles.html">
+<script src="/tpc/moment/moment.js"></script>
+
+<dom-module id="output-view">
+  <template>
+    <style include="main-styles">
+      .values {
+        margin-bottom: 10px;
+      }
+      .values > div, .trends > div {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        padding: 5px;
+      }
+      .actions {
+        margin-top: 20px;
+        display: flex;
+        justify-content: flex-end;
+      }
+      .button {
+        margin: 0 10px;
+      }
+    </style>
+
+    <iron-ajax id="pusher" url="/data/models/timeseries" method="put" headers='{ "Content-Type": "application/json" }'></iron-ajax>
+    <iron-ajax id="nuker" url="/data/models/timeseries" method="delete"></iron-ajax>
+
+    <div class="values">
+
+      <div class="heading">Values</div>
+
+      <div>
+        <span>Treating Pressure</span>
+        <input id="tp" type="number" step="100" value="1000">
+      </div>
+
+      <div>
+        <span>Slurry Rate</span>
+        <input id="sr" type="number" step="1" value="25">
+      </div>
+
+      <div>
+        <span>Blender Prop Conc</span>
+        <input id="bpc" type="number" step=".01" value=".6">
+      </div>
+
+      <div>
+        <span>Calc BH Prop Conc</span>
+        <input id="cbhpc" type="number" step=".01" value=".4">
+      </div>
+
+      <div>
+        <span>Friction Reducer</span>
+        <input id="fr" type="number" step=".01" value=".2">
+      </div>
+
+      <div>
+        <span>Clay Stabalizer</span>
+        <input id="cs" type="number" step=".01" value=".2">
+      </div>
+
+      <div>
+        <span>Surfactant</span>
+        <input id="surf" type="number" step=".01" value=".8">
+      </div>
+
+      <div>
+        <span>Biocide</span>
+        <input id="bio" type="number" step=".01" value=".4">
+      </div>
+
+    </div>
+
+    <div class="trends">
+
+      <div class="heading">Trends</div>
+
+      <div>
+        <span>Treating Pressure</span>
+        <input id="tpt" type="number" step="100" value="0">
+      </div>
+
+      <div>
+        <span>Slurry Rate</span>
+        <input id="srt" type="number" step=".01" value="0">
+      </div>
+
+      <div>
+        <span>Blender Prop Conc</span>
+        <input id="bpct" type="number" step=".0001" value="0">
+      </div>
+
+      <div>
+        <span>Calc BH Prop Conc</span>
+        <input id="cbhpct" type="number" step=".0001" value="0">
+      </div>
+
+      <div>
+        <span>Friction Reducer</span>
+        <input id="frt" type="number" step=".0001" value="0">
+      </div>
+
+      <div>
+        <span>Clay Stabalizer</span>
+        <input id="cst" type="number" step=".0001" value="0">
+      </div>
+
+      <div>
+        <span>Surfactant</span>
+        <input id="surft" type="number" step=".0001" value="0">
+      </div>
+
+      <div>
+        <span>Biocide</span>
+        <input id="biot" type="number" step=".0001" value="0">
+      </div>
+
+    </div>
+    <div class="actions">
+      <span class="button button-primary" on-click="step">Step</span>
+      <span class="button button-primary" on-click="hare">Hare</span>
+      <span class="button button-primary" on-click="tortoise">Tortoise</span>
+    </div>
+    <div class="actions">
+      <span class="button button-primary" on-click="stop">Stop</span>
+      <span class="button button-primary" on-click="clear">Clear</span>
+    </div>
+
+    <div id="output">
+    </div>
+
+  </template>
+
+  <script>
+    class OutputView extends Polymer.Element {
+      static get is() { return 'output-view'; }
+      static get properties() {
+        return {
+          pollId: Number
+        };
+      }
+
+      constructor() {
+        super();
+        this.poll = this.poll.bind(this);
+      }
+
+      tortoise() {
+        this.startPolling(1000);
+      }
+
+      hare() {
+        this.startPolling(100);
+      }
+
+      step() {
+        this.stop();
+        this.poll();
+      }
+
+      startPolling(interval) {
+        this.stop();
+        this.pollId = setInterval(this.poll, interval);
+      }
+
+      stop() {
+        if (this.pollId && this.pollId >= 0) {
+          clearInterval(this.pollId);
+          this.pollId = -1;
+        }
+      }
+
+      clear() {
+        this.stop();
+        this.$.nuker.generateRequest();
+
+        ['tp', 'sr', 'bpc', 'cbhpc', 'fr', 'cs', 'surf', 'bio'].forEach(v => this.$[v + 't'].value = 0);
+      }
+
+      poll() {
+        this.trend();
+        this.send();
+      }
+
+      trend() {
+        ['tp', 'sr', 'bpc', 'cbhpc', 'fr', 'cs', 'surf', 'bio']
+          .forEach(v => this.$[v].value = Number(this.$[v].value) + Number(this.$[v + 't'].value));
+      }
+
+      send() {
+        const pusher = this.$.pusher;
+        if (!pusher.loading) {
+          const body = {
+            when: moment().toISOString()
+            , tp: this.$.tp.value
+            , sr: this.$.sr.value
+            , bpc: this.$.bpc.value
+            , cbhpc: this.$.cbhpc.value
+            , fr: this.$.fr.value
+            , cs: this.$.cs.value
+            , surf: this.$.surf.value
+            , bio: this.$.bio.value
+          };
+          pusher.body = body;
+          pusher.generateRequest();
+        }
+      }
+
+    }
+
+    window.customElements.define(OutputView.is, OutputView);
+  </script>
+</dom-module>

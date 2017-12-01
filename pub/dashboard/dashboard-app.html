@@ -1,0 +1,84 @@
+<link rel="import" href="/tpc/polymer/polymer-element.html">
+<link rel="import" href="/tpc/iron-ajax/iron-ajax.html">
+<link rel="import" href="/main-styles.html">
+<link rel="import" href="/dashboard/time-series.html">
+<link rel="import" href="/dashboard/historic-table.html">
+<link rel="import" href="/dashboard/alert-details.html">
+<link rel="import" href="/dashboard/kpi-view.html">
+<link rel="import" href="/header-ribbon.html">
+
+<dom-module id="dashboard-app">
+  <template>
+    <style include="main-styles">
+      .content {
+        width: 375px;
+        margin: 55px auto 0;
+        min-height: calc(100vh - 55px);
+        color: dimgray;
+        display: flex;
+        flex-direction: column;
+      }
+      .content > div {
+        margin-bottom: 10px;
+      }
+    </style>
+
+    <iron-ajax id="alertLoader" url="/data/models/alerts" last-response="{{alerts}}"></iron-ajax>
+
+    <header-ribbon></header-ribbon>
+
+    <div class="content">
+      <template is="dom-if" if="[[hasAlerts(alerts)]]">
+        <div>
+          <alert-details alerts="[[alerts]]"></alert-details>
+        </div>
+      </template>
+
+      <div>
+        <kpi-view></kpi-view>
+      </div>
+
+      <div>
+        <time-series></time-series>
+      </div>
+
+      <div>
+        <historic-table></historic-table>
+      </div>
+    </div>
+
+  </template>
+
+  <script>
+    class DashboardApp extends Polymer.Element {
+      static get is() { return 'dashboard-app'; }
+      static get properties() {
+        return {
+          alerts: Array
+        };
+      }
+
+      constructor() {
+        super();
+
+        this.poll = this.poll.bind(this);
+      }
+
+      hasAlerts(alerts) {
+        return alerts && alerts.length > 0;
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        setInterval(this.poll, 1000);
+      }
+
+      poll() {
+        this.$.alertLoader.generateRequest();
+      }
+
+    }
+
+    window.customElements.define(DashboardApp.is, DashboardApp);
+  </script>
+</dom-module>
