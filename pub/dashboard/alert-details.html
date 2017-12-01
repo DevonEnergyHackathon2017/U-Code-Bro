@@ -1,14 +1,15 @@
 <link rel="import" href="/tpc/polymer/polymer-element.html">
 <link rel="import" href="/main-styles.html">
-
+<link rel="import" href="/tpc/iron-icon/iron-icon.html">
 
 <dom-module id="alert-details">
   <template>
     <style include="main-styles">
       .content {
-        padding: 20px;
+        padding: 10px;
         min-height: 200px;
         display: flex;
+        flex-direction: column;
       }
       .buttons {
         display: flex;
@@ -16,29 +17,80 @@
       .button {
         padding: 10px;
         margin: 10px;
-        background-color: wheat;
+        font-size: small;
       }
       .button:hover {
         cursor: pointer;
       }
-      h2 {
-        text-align: center;
+      .primary {
+        color: blue;
+        background-color: white;
+        border: 1px solid #425866;
+      }
+      .secondary {
+        color: white;
+        background-color: blue;
+      }
+      .h1 {
+        font-size: x-large;
+        background-color: #eeeeee;
+        box-shadow: 0 3px 3px 0 #cccccc;
+        width: 100%;
+        padding: 20px;
+      }
+      .h1 .sub {
+        font-size: medium;
+        font-weight: lighter;
+        padding-top: 20px;
+      }
+      .h2 {
+        font-size: large;
+        display: flex;
+        flex-wrap: nowrap;
+        padding: 20px;
+      }
+      .h2 iron-icon {
+        margin: -20px;
+        padding: 0;
+        --iron-icon-height: 40px;
+        --iron-icon-width: 40px;
+      }
+      .h2 iron-icon:hover {
+        cursor: pointer;
       }
       :host {
         width: 100%;
       }
     </style>
 
+    <div class="h1">
+      <div><span>Stage Bypass Advisory</span></div>
+      <div class="sub"><span>[[time]]</span></div>
+    </div>
+
     <div class="content">
 
-      <h2>Alert Details</h2>
+      <div class="h2">
+        <div>
+          <iron-icon icon="icons:chevron-left"></iron-icon>
+        </div>
+        <div style="flex-grow: 1;"></div>
+        <span>Alert Details</span>
+        <div style="flex-grow: 1;"></div>
+        <div>
+          <iron-icon icon="icons:chevron-right"></iron-icon>
+        </div>
+      </div>
 
-      <template is="dom-repeat" items="[[alerts]]">
-        <div>[[item.text]]</div>
+      <template is="dom-if" if="[[!!current]]">
+        <div>[[current.text]]</div>
+
+        <div style="flex-grow: 1;"></div>
+
         <div class="buttons">
           <div style="flex-grow: 1;"></div>
-          <div class="button" on-click="[[dismiss]]">Dismiss</div>
-          <div class="button" on-click="[[bypass]]">Bypass</div>
+          <div class="button primary" on-click="[[dismiss]]">Dismiss</div>
+          <div class="button secondary" on-click="[[bypass]]">Bypass</div>
         </div>
       </template>
 
@@ -53,13 +105,32 @@
         return {
           alerts: { type: Array, observer: 'alertsUpdated' }
           , current: Object
+          , time: { type: String, value: () => moment().format('YYYY-MM-dd, hh:mma') }
         };
       }
 
-      alertsUpdated(alerts) {
-        if(alerts && alerts.length > 0) {
-        } else {
+      constructor() {
+        super();
 
+        this.poll = this.poll.bind(this);
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        setInterval(this.poll, 1000);
+      }
+
+      poll() {
+        const time = moment().format('YYYY-MM-dd, hh:mma');
+        if (this.time !== time)
+          this.time = time;
+      }
+
+      alertsUpdated(alerts) {
+        if (alerts && alerts.length > 0) {
+          this.current = alerts[0];
+        } else {
+          this.current = false;
         }
       }
 
