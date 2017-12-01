@@ -13,7 +13,7 @@
         background-color: ghostwhite;
       }
       td {
-        padding: 5px 15px;
+        padding: 5px 10px;
       }
       h2 {
         text-align: center;
@@ -32,7 +32,7 @@
           </td>
           <td width="100%">[[item.key]]</td>
           <td nowrap>[[item.stage]]</td>
-          <td nowrap>[[formatDate(item.when)]]</td>
+          <td nowrap style="font-size: small;">[[formatDate(item.when)]]</td>
         </tr>
       </template>
     </table>
@@ -49,7 +49,7 @@
       }
 
       formatDate(date) {
-        return moment(date).toISOString();
+        return moment(date).format('HH:mm:ss');
       }
 
       getIcon(data) {

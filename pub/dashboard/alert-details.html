@@ -5,23 +5,44 @@
 <dom-module id="alert-details">
   <template>
     <style include="main-styles">
-      .button {
+      .content {
         padding: 20px;
+        min-height: 200px;
+        display: flex;
+      }
+      .buttons {
+        display: flex;
+      }
+      .button {
+        padding: 10px;
+        margin: 10px;
+        background-color: wheat;
       }
       .button:hover {
         cursor: pointer;
       }
+      h2 {
+        text-align: center;
+      }
+      :host {
+        width: 100%;
+      }
     </style>
 
-    <h2>Alert Details</h2>
+    <div class="content">
 
-    <template is="dom-repeat" items="[[alerts]]">
-      <div>[[item.text]]</div>
-      <div>
-        <span class="button" on-click="[[dismiss]]">Dismiss</span>
-        <span class="button" on-click="[[bypass]]">Bypass</span>
-      </div>
-    </template>
+      <h2>Alert Details</h2>
+
+      <template is="dom-repeat" items="[[alerts]]">
+        <div>[[item.text]]</div>
+        <div class="buttons">
+          <div style="flex-grow: 1;"></div>
+          <div class="button" on-click="[[dismiss]]">Dismiss</div>
+          <div class="button" on-click="[[bypass]]">Bypass</div>
+        </div>
+      </template>
+
+    </div>
 
   </template>
 
@@ -30,14 +51,24 @@
       static get is() { return 'alert-details'; }
       static get properties() {
         return {
-          alertCode: Number
+          alerts: { type: Array, observer: 'alertsUpdated' }
+          , current: Object
         };
       }
 
+      alertsUpdated(alerts) {
+        if(alerts && alerts.length > 0) {
+        } else {
+
+        }
+      }
+
       dismiss(event) {
+        console.log('dismiss');
       }
 
       bypass(event) {
+        console.log('bypass');
       }
     }
 
