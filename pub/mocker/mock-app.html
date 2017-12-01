@@ -1,20 +1,24 @@
 <link rel="import" href="/tpc/polymer/polymer-element.html">
-<link rel="import" href="main-styles.html">
+<link rel="import" href="/main-styles.html">
 <link rel="import" href="/mocker/input-view.html">
 <link rel="import" href="/mocker/output-view.html">
+<script src="/tpc/moment/moment.js"></script>
 
 <dom-module id="mock-app">
   <template>
     <style include="main-styles">
+      .card {
+        margin-bottom: 30px;
+      }
     </style>
 
     <div class="card">
       <input-view></input-view>
     </div>
 
-    <!--<div class="card">-->
-      <!--<output-view></output-view>-->
-    <!--</div>-->
+    <div class="card">
+      <output-view></output-view>
+    </div>
 
   </template>
 

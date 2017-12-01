@@ -12,10 +12,10 @@
 
     <div>
       <div>
-        <textarea id="input" style="height: 25px; width: 200px;"></textarea>
+        <textarea id="title" style="height: 25px; width: 200px;"></textarea>
       </div>
       <div>
-        <textarea id="input" style="height: 50px; width: 200px;"></textarea>
+        <textarea id="text" style="height: 50px; width: 200px;"></textarea>
       </div>
       <div>
         <input id="approval" type="checkbox">
@@ -32,16 +32,19 @@
 
       addAlert(event) {
         const pusher = this.$.alertPusher;
-        const input = this.$.input;
         pusher.headers = {
           "Content-Type": "application/json"
         };
         pusher.body = {
-          text: input.value
+          title: this.$.title.value
+          , text: this.$.text.value
           , timestamp: moment().toISOString()
           , approval: this.$.approval.checked
         };
-        input.value = '';
+
+        this.$.title.value = '';
+        this.$.text.value = '';
+        this.$.approval.checked = false;
         pusher.generateRequest();
       }
     }

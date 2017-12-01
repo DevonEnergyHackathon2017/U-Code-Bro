@@ -1,6 +1,8 @@
 module.exports = class Mocker {
   constructor(logger) {
-    this.data = {};
+    this.data = {
+      alerts: []
+    };
     this.id = 10;
 
     this.addRoutes = this.addRoutes.bind(this);
@@ -8,6 +10,10 @@ module.exports = class Mocker {
     this.postModel = this.postModel.bind(this);
     this.putModel = this.putModel.bind(this);
     this.nukeModels = this.nukeModels.bind(this);
+  }
+
+  nextId() {
+    return this.id++;
   }
 
   addRoutes(app) {
@@ -30,7 +36,7 @@ module.exports = class Mocker {
       const index = models.indexOf(target);
       models.splice(index, 1, model);
     } else {
-      model.id = model.id || this.id++;
+      model.id = model.id || this.nextId();
       models.push(model);
       this.data[req.params.model] = models;
     }
@@ -41,7 +47,7 @@ module.exports = class Mocker {
   putModel(req, res) {
     const models = this.data[req.params.model] || [];
     const model = req.body;
-    model.id = this.id++;
+    model.id = this.nextId();
     models.push(model);
     this.data[req.params.model] = models;
 

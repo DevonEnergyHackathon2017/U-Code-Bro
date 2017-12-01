@@ -9,7 +9,7 @@
     <style include="main-styles">
       .card {
         height: 400px;
-        padding: 10px;
+        padding: 10px 10px 30px;
       }
       .heading {
         margin-top: 10px;
@@ -17,10 +17,13 @@
       }
     </style>
 
-    <iron-ajax auto url="/data/time-series-small" last-response="{{input}}" handle-as="json"></iron-ajax>
+    <iron-ajax id="reg" url="/data/time-series-small" last-response="{{input}}" handle-as="json"></iron-ajax>
+    <iron-ajax id="mock" url="/data/models/timeseries" handle-as="json" on-response="handleResponse"></iron-ajax>
 
     <div class="card">
-      <div class="heading">Frac Data</div>
+      <div class="heading" on-click="mockSwitch">Frac Data
+        <template is="dom-if" if="[[mock]]"> (Mock)</template>
+      </div>
       <vaadin-area-chart>
         <chart background-color="transparent"></chart>
         <exporting enabled="false"></exporting>
@@ -31,7 +34,10 @@
         <tooltip shared="true" value-decimals="2"></tooltip>
         <legend layout="horizontal" align="center" item-width="150" background-color="transparent"></legend>
 
-        <y-axis id="axisTreatingPressure" min="0" visible="false"></y-axis>
+        <y-axis id="axisTreatingPressure" min="0">
+          <labels rotation="270" y="-8" x="-5"></labels>
+          <chart-title text="null"></chart-title>
+        </y-axis>
         <data-series name="Treating Pressure" y-axis="axisTreatingPressure" data="[[data.TreatingPressure]]" crop-threshold="200000"></data-series>
 
         <y-axis id="axisSlurryRate" min="0" visible="false"></y-axis>
@@ -68,7 +74,30 @@
           input: Array
           , data: { type: Array, computed: 'makeData(input)' }
           , fields: { type: Array, computed: 'makeFields()' }
+          , input2: Array
+          , mock: { type: Boolean, observer: 'mockChanged' }
         };
+      }
+
+      constructor() {
+        super();
+
+        this.handleResponse = this.handleResponse.bind(this);
+        this.makeRequest = this.makeRequest.bind(this);
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        this.mockChanged(this.mock);
+      }
+
+      mockSwitch(event) {
+        this.mock = !this.mock;
+      }
+
+      mockChanged(mock) {
+        this.$.mock.auto = !!mock;
+        this.$.reg.auto = !mock;
       }
 
       getData(data) {
@@ -101,12 +130,58 @@
             const items = input.Items.filter(i => i.Name === v.name);
             if (items && items.length > 0) {
               results[v.key] = items[0].Items
-                .map(i => { return { x: moment(i.Timestamp).valueOf(), y: i.Value }; });
+                .map(i => { return [moment(i.Timestamp).valueOf(), i.Value]; });
             }
           });
         }
 
         return results;
+      }
+
+      handleResponse(event) {
+        const data = event.detail.response;
+        this.input = {
+          Items: [
+            {
+              Name: "Treating Pressure"
+              , Items: data.map(v => { return { Timestamp: v.when, Value: Number(v.tp) } })
+            }
+            , {
+              Name: "Slurry Rate"
+              , Items: data.map(v => { return { Timestamp: v.when, Value: Number(v.sr) } })
+            }
+            , {
+              Name: "Blender Prop Conc"
+              , Items: data.map(v => { return { Timestamp: v.when, Value: Number(v.bpc) } })
+            }
+            , {
+              Name: "Calc BH Prop Conc"
+              , Items: data.map(v => { return { Timestamp: v.when, Value: Number(v.cbhpc) } })
+            }
+            , {
+              Name: "Friction Reducer"
+              , Items: data.map(v => { return { Timestamp: v.when, Value: Number(v.fr) } })
+            }
+            , {
+              Name: "Clay Stabilizer"
+              , Items: data.map(v => { return { Timestamp: v.when, Value: Number(v.cs) } })
+            }
+            , {
+              Name: "Surfactant"
+              , Items: data.map(v => { return { Timestamp: v.when, Value: Number(v.surf) } })
+            }
+            , {
+              Name: "Biocide"
+              , Items: data.map(v => { return { Timestamp: v.when, Value: Number(v.bio) } })
+            }
+          ]
+        };
+
+        setTimeout(this.makeRequest, 2000);
+      }
+
+      makeRequest() {
+        this.$.mock.generateRequest();
       }
     }
 

@@ -1,0 +1,6 @@
+{
+  "targetSandVolume": 200000,
+  "expectedGains": 180000,
+  "flushTime": 480,
+  "pressureThreshold": 8000
+}

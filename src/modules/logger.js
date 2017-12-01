@@ -34,7 +34,7 @@ module.exports = class Logger {
 
   static format(level, message) {
     let name = '';
-    if(this && this._name)
+    if (this && this._name)
       name = `[${this._name}] `;
     return `${name}[${new Date().toISOString()}] [${level.toUpperCase()}] ${message}`;
   }
@@ -43,11 +43,15 @@ module.exports = class Logger {
     let result = message;
     Object.keys(args || {}).forEach(key => {
       let arg = args[key];
-      if (typeof(arg) === 'function')
-        arg = arg();
-      if (typeof(arg) === 'object')
-        arg = arg.stringify();
-      arg = arg.toString();
+      if(arg === undefined) {
+        arg = '[[undefined]]'
+      } else {
+        if (typeof(arg) === 'function')
+          arg = arg();
+        if (typeof(arg) === 'object')
+          arg = arg.stringify();
+        arg = arg.toString();
+      }
       result = result.replace(new RegExp(`\{\{${key}\}\}`, 'g'), arg);
     });
     return result;
