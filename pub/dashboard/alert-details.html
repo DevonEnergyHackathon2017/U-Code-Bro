@@ -1,44 +1,71 @@
 <link rel="import" href="/tpc/polymer/polymer-element.html">
 <link rel="import" href="/main-styles.html">
-
+<link rel="import" href="/tpc/iron-icon/iron-icon.html">
 
 <dom-module id="alert-details">
   <template>
     <style include="main-styles">
-      .content {
-        padding: 20px;
-        min-height: 200px;
+      .head-big {
+        background: #E2E8ED;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.22);
+        border-bottom: none;
+      }
+      .title {
+        margin-bottom: 20px;
+      }
+      .head-little {
         display: flex;
+        flex-wrap: nowrap;
+        --iron-icon-height: 40px;
+        --iron-icon-width: 40px;
+        margin-bottom: 20px;
+        border-top: none;
+      }
+      .heading {
+        margin-top: 12px;
+      }
+      .main {
+        padding-top: 10px;
       }
       .buttons {
         display: flex;
       }
       .button {
-        padding: 10px;
-        margin: 10px;
-        background-color: wheat;
+        margin-left: 20px;
       }
-      .button:hover {
-        cursor: pointer;
-      }
-      h2 {
-        text-align: center;
-      }
-      :host {
-        width: 100%;
+      .text {
+        height: 100px;
       }
     </style>
 
-    <div class="content">
+    <div class="card head-big">
+      <div class="title">Stage Bypass Advisory</div>
+      <div class="subtitle">[[time]]</div>
+    </div>
 
-      <h2>Alert Details</h2>
+    <div class="card main">
 
-      <template is="dom-repeat" items="[[alerts]]">
-        <div>[[item.text]]</div>
+      <div class="head-little">
+        <div>
+          <iron-icon icon="icons:chevron-left"></iron-icon>
+        </div>
+        <div style="flex-grow: 1;"></div>
+        <span class="heading">Alert Details</span>
+        <div style="flex-grow: 1;"></div>
+        <div>
+          <iron-icon icon="icons:chevron-right"></iron-icon>
+        </div>
+      </div>
+
+      <template is="dom-if" if="[[!!current]]">
+        <div class="text">[[current.text]]</div>
+
+        <div style="flex-grow: 1;"></div>
+
         <div class="buttons">
           <div style="flex-grow: 1;"></div>
-          <div class="button" on-click="[[dismiss]]">Dismiss</div>
-          <div class="button" on-click="[[bypass]]">Bypass</div>
+          <div class="button button-tertiary" on-click="[[dismiss]]">Dismiss</div>
+          <div class="button button-cta" on-click="[[bypass]]">Bypass</div>
         </div>
       </template>
 
@@ -53,13 +80,32 @@
         return {
           alerts: { type: Array, observer: 'alertsUpdated' }
           , current: Object
+          , time: { type: String, value: () => moment().format('YYYY-MM-dd, hh:mma') }
         };
       }
 
-      alertsUpdated(alerts) {
-        if(alerts && alerts.length > 0) {
-        } else {
+      constructor() {
+        super();
 
+        this.poll = this.poll.bind(this);
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        setInterval(this.poll, 1000);
+      }
+
+      poll() {
+        const time = moment().format('YYYY-MM-dd, hh:mma');
+        if (this.time !== time)
+          this.time = time;
+      }
+
+      alertsUpdated(alerts) {
+        if (alerts && alerts.length > 0) {
+          this.current = alerts[0];
+        } else {
+          this.current = false;
         }
       }
 
