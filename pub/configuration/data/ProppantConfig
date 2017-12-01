@@ -1,55 +1,61 @@
-{
-    [
-        {
-        "h2oGallons": 10000,
-        "proppantConcentrationPercent" : 0,
-        "sandLbs": 0
-        },
-        {
-        "h2oGallons": 10000,
-        "proppantConcentrationPercent" : 25,
-        "sandLbs": 2500
-        },
-        {
-        "h2oGallons": 10000,
-        "proppantConcentrationPercent" : 50,
-        "sandLbs": 5000
-        },
-        {
-        "h2oGallons": 10000,
-        "proppantConcentrationPercent" : 75,
-        "sandLbs": 7500
-        },
-        {
-        "h2oGallons": 10000,
-        "proppantConcentrationPercent" : 100,
-        "sandLbs": 10000
-        },
-        {
-        "h2oGallons": 10000,
-        "proppantConcentrationPercent" : 125,
-        "sandLbs": 12500
-        },
-        {
-        "h2oGallons": 10000,
-        "proppantConcentrationPercent" : 150,
-        "sandLbs": 15000
-        },
-        {
-        "h2oGallons": 10000,
-        "proppantConcentrationPercent" : 175,
-        "sandLbs": 17500
-        },
-        {
-        "h2oGallons": 10000,
-        "proppantConcentrationPercent" : 200,
-        "sandLbs": 20000
-        },
-        {
-        "h2oGallons": 12280,
-        "proppantConcentrationPercent" : "Flush",
-        "sandLbs": 0
-        },
-
-    ]
-}
+	[{
+			"h2oGallons": 10000,
+			"proppantConcentrationPercent": 0,
+			"sandLbs": 0,
+			"length": 20
+		},
+		{
+			"h2oGallons": 10000,
+			"proppantConcentrationPercent": 25,
+			"sandLbs": 2500,
+			"length": 40
+		},
+		{
+			"h2oGallons": 10000,
+			"proppantConcentrationPercent": 50,
+			"sandLbs": 5000,
+			"length": 60
+		},
+		{
+			"h2oGallons": 10000,
+			"proppantConcentrationPercent": 75,
+			"sandLbs": 7500,
+			"length": 80
+		},
+		{
+			"h2oGallons": 10000,
+			"proppantConcentrationPercent": 100,
+			"sandLbs": 10000,
+			"length": 100
+		},
+		{
+			"h2oGallons": 10000,
+			"proppantConcentrationPercent": 125,
+			"sandLbs": 12500,
+			"length": 120
+		},
+		{
+			"h2oGallons": 10000,
+			"proppantConcentrationPercent": 150,
+			"sandLbs": 15000,
+			"length": 140
+		},
+		{
+			"h2oGallons": 10000,
+			"proppantConcentrationPercent": 175,
+			"sandLbs": 17500,
+			"length": 160
+		},
+		{
+			"h2oGallons": 10000,
+			"proppantConcentrationPercent": 200,
+			"sandLbs": 20000,
+			"length": 180
+		},
+		{
+			"h2oGallons": 12280,
+			"proppantConcentrationPercent": 0,
+			"sandLbs": 0,
+			"length": 200
+		}
+	]
