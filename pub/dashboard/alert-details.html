@@ -13,6 +13,9 @@
       .title {
         margin-bottom: 20px;
       }
+      .subtitle {
+        text-transform: uppercase;
+      }
       .head-little {
         display: flex;
         flex-wrap: nowrap;
@@ -40,7 +43,7 @@
 
     <div class="card head-big">
       <div class="title">Stage Bypass Advisory</div>
-      <div class="subtitle">[[time]]</div>
+      <div class="subtitle">[[formatTime(current.timestamp)]]</div>
     </div>
 
     <div class="card main">
@@ -90,15 +93,8 @@
         this.poll = this.poll.bind(this);
       }
 
-      connectedCallback() {
-        super.connectedCallback();
-        setInterval(this.poll, 1000);
-      }
-
-      poll() {
-        const time = moment().format('YYYY-MM-dd, hh:mma');
-        if (this.time !== time)
-          this.time = time;
+      formatTime(stamp) {
+        return moment(stamp).format('YYYY-MM-DD, h:mma');
       }
 
       alertsUpdated(alerts) {
