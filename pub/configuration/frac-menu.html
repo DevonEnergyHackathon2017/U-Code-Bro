@@ -1,0 +1,60 @@
+<link rel="import" href="../tpc/polymer/polymer-element.html">
+<link rel="import" href="../tpc/iron-icons/iron-icons.html">
+<link rel="import" href="../tpc/iron-icon/iron-icon.html">
+<link rel="import" href="../main-styles.html">
+<
+<dom-module id="frac-menu">
+  <template>
+    <style include="main-styles">
+        .menubar {
+            padding-top: 2.3rem;
+            background-color: #EBEFF2;
+            border-width: 0;
+            border-style: none;
+            width: 100%;
+            height: 90px;
+        }
+        .selectedmenu {
+            background-color: #fff;
+        }
+        .nonselectedmenu {
+            padding-left: 10px;
+        }
+    </style>
+      <table class="menubar">
+          <tr>
+              <td class="selectedmenu" width="170px">
+                <table class="selectedmenu">
+                  <tr>
+                      <td class="selectedmenu"><iron-icon src="/configuration/images/analysis_32x32.svg">Test</iron-icon></td>
+                      <td class="selectedmenu">Frac Plans</td>
+                      <td class="selectedmenu" align="right"><iron-icon icon="expand-more"></iron-icon></td>
+                  </tr>
+                </table>
+              </td>
+              <td class="nonselectedmenu"><iron-icon src="/configuration/images/catalog_32x32.svg"></iron-icon></td>
+              <td width="90px"><div>Reports</div></td>
+              <td><iron-icon src="/configuration/images/administration_32x32.svg"></iron-icon></td>
+              <td width="120px"><div>Administration</div></td>
+              <td><iron-icon src="/configuration/images/generic_user_22x22.svg"></iron-icon></td>
+              <td width="100px"><div>My Profile</div></td>
+              <td width="1400px"></td>
+          </tr>
+      </table>
+  </template>
+  <script>
+    class FracMenu extends Polymer.Element {
+      static get is() { return 'frac-menu'; }
+      static get properties() {
+        return {
+          selected: {
+            type: Number,
+            value: 0
+          },
+          fracPlanData: Object
+        };
+      }
+    }
+    window.customElements.define(FracMenu.is, FracMenu);
+  </script>
+</dom-module>

@@ -1,0 +1,142 @@
+<link rel="import" href="/tpc/polymer/polymer-element.html">
+<link rel="import" href="/main-styles.html">
+<link rel="import" href="/tpc/iron-icon/iron-icon.html">
+
+<dom-module id="alert-details">
+  <template>
+    <style include="main-styles">
+      .head-big {
+        background: #E2E8ED;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.22);
+        border-bottom: none;
+      }
+      .title {
+        margin-bottom: 20px;
+      }
+      .subtitle {
+        text-transform: uppercase;
+      }
+      .head-little {
+        display: flex;
+        flex-wrap: nowrap;
+        --iron-icon-height: 40px;
+        --iron-icon-width: 40px;
+        margin-bottom: 20px;
+        border-top: none;
+      }
+      .heading {
+        margin-top: 12px;
+      }
+      .main {
+        padding-top: 10px;
+      }
+      .buttons {
+        display: flex;
+      }
+      .button {
+        margin-left: 20px;
+      }
+      .text {
+        height: 100px;
+      }
+    </style>
+
+    <iron-ajax id="alertPusher" url="/data/models/alerts" method="post"></iron-ajax>
+
+    <div class="card head-big">
+      <div class="title">[[current.title]]</div>
+      <div class="subtitle">[[formatTime(current.timestamp)]]</div>
+    </div>
+
+    <div class="card main">
+
+      <div class="head-little">
+        <div>
+          <iron-icon icon="icons:chevron-left"></iron-icon>
+        </div>
+        <div style="flex-grow: 1;"></div>
+        <span class="heading">Alert Details</span>
+        <div style="flex-grow: 1;"></div>
+        <div>
+          <iron-icon icon="icons:chevron-right"></iron-icon>
+        </div>
+      </div>
+
+      <template is="dom-if" if="[[!!current]]">
+        <div class="text">[[current.text]]</div>
+
+        <div style="flex-grow: 1;"></div>
+
+        <div class="buttons">
+          <div style="flex-grow: 1;"></div>
+          <template is="dom-if" if="[[requiresApproval(current)]]">
+            <div class="button button-tertiary" on-click="dismiss">Dismiss</div>
+            <div class="button button-cta" on-click="approve">Approve</div>
+          </template>
+          <template is="dom-if" if="[[!requiresApproval(current)]]">
+            <div class="button button-cta" on-click="complete">Mark As Completed</div>
+          </template>
+        </div>
+      </template>
+
+    </div>
+
+  </template>
+
+  <script>
+    class AlertDetails extends Polymer.Element {
+      static get is() { return 'alert-details'; }
+      static get properties() {
+        return {
+          alerts: { type: Array, observer: 'alertsUpdated' }
+          , current: Object
+          , time: { type: String, value: () => moment().format('YYYY-MM-dd, hh:mma') }
+        };
+      }
+
+      requiresApproval(current) {
+        return current && current.approval;
+      }
+
+      formatTime(stamp) {
+        return moment(stamp).format('YYYY-MM-DD, h:mma');
+      }
+
+      alertsUpdated(alerts) {
+        if (alerts && alerts.length > 0) {
+          this.current = alerts[0];
+        } else {
+          this.current = false;
+        }
+      }
+
+      dismiss(event) {
+        this.handleAlert();
+      }
+
+      approve(event) {
+        this.handleAlert();
+      }
+
+      complete(event) {
+        this.handleAlert();
+      }
+
+      handleAlert() {
+        const alert = this.current;
+        if (alert) {
+          const pusher = this.$.alertPusher;
+          pusher.headers = {
+            "Content-Type": "application/json"
+          };
+          alert.ack = true;
+          pusher.body = alert;
+          pusher.generateRequest();
+        }
+      }
+
+    }
+
+    window.customElements.define(AlertDetails.is, AlertDetails);
+  </script>
+</dom-module>

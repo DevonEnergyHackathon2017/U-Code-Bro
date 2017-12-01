@@ -1,0 +1,45 @@
+{
+  "billRate": 20000,
+  "events": [
+    {
+      "trigger": {
+        "type": "pressureSlope"
+      },
+      "actions": [
+        {
+          "type": "sms",
+          "targets": [
+            ""
+          ]
+        },
+        {
+          "type": "alert",
+          "title": "ScreenOut Avoidance Advisory",
+          "text": "Unless something is done to reduce the pressure, a flush will be required in approximately 10 minutes.",
+          "approval": true
+        }
+      ]
+    },
+    {
+      "trigger": {
+        "type": "pressureSlopeEmergency",
+        "threshold": 0.9,
+        "timeout": 30
+      },
+      "actions": [
+        {
+          "type": "sms",
+          "tragets": [
+            ""
+          ]
+        },
+        {
+          "type": "alert",
+          "title": "Emergency Shutdown Advisory",
+          "text": "Treating Pressure will raise above the maximum threshold in an estimated 30 seconds.  Shutting down immediately.",
+          "approval": false
+        }
+      ]
+    }
+  ]
+}
